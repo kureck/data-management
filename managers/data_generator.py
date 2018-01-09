@@ -4,6 +4,7 @@ import random
 import string
 from utils.file import write
 
+MB = 1024 * 1024
 
 def create_directory(path, size=None):
     try:
@@ -25,3 +26,17 @@ def create_file_by_size(path, size):
     m = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(size)])
     with open(path, 'w') as writer:
         writer.write(m)
+
+def populate_folder(dir_path, folder_size, file_size):
+    left = (folder_size % file_size) * MB
+    number_files = folder_size // file_size
+
+    for x in range(number_files):
+        file_name = "file{}".format(x)
+        file_path = "{}/{}".format(dir_path, file_name)
+        create_file_by_size(file_path, file_size * MB)
+
+    if left:
+        file_name = "file{}".format(number_files+1)
+        file_path = "{}/{}".format(dir_path, file_name)
+        create_file_by_size(file_path, left * MB)

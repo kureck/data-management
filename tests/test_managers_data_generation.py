@@ -2,6 +2,7 @@ import os
 import shutil
 from managers.data_generator import create_directory
 from managers.data_generator import create_file_by_size
+from managers.data_generator import populate_folder
 
 
 class TestManagersDataGeneration(object):
@@ -55,8 +56,8 @@ class TestManagersDataGeneration(object):
         assert expected == file_value
 
     def test_create_file_by_size(self):
-        size = 8
-        file_size = 8*1024*1024  # 8388608
+        size = 2
+        file_size = 2*1024*1024  # 2097125
 
         args = ("sensors", "64")
         path, size = args
@@ -76,3 +77,27 @@ class TestManagersDataGeneration(object):
         value = os.path.getsize(file_path)
 
         assert value == file_size
+
+    def test_create_two_files_given_dir_size(self):
+        MB = 1024*1024
+        file_size = 2 * MB
+        folder_size = 4 * MB
+
+        args = ("sensors", "64")
+        path, size = args
+
+        dir_path = "{}/{}".format(self.master_data_path, path)
+
+        if os.path.isdir(dir_path):
+            shutil.rmtree(dir_path)
+
+        create_directory(dir_path, size)
+
+        file_name = "file1"
+        file_path = "{}/{}/{}".format(self.master_data_path, path, file_name)
+
+        populate_folder(dir_path, folder_size, file_size)
+
+        value = sum(os.path.getsize("{}/{}".format(dir_path, f)) for f in os.listdir(dir_path) if os.path.isfile("{}/{}".format(dir_path,f)))
+
+        assert value == folder_size
