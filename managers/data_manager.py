@@ -4,6 +4,7 @@ import errno
 import random
 import string
 import collections
+import datetime
 from utils.file import write, read
 from utils.helpers import dataset_control_hash
 
@@ -65,3 +66,15 @@ def update_data(master_path, folders_name_size):
         updated.update(d)
     control["folders"] = updated
     write(control, control_file_path)
+
+def backup_data(master_path, backup_path):
+    now = datetime.datetime.utcnow()
+    timestamp = now.strftime("%Y%m%d%H%M%S%f")
+    master_name = os.path.split(master_path)[-1]
+
+    timed_backup_path = "{}/{}_{}".format(backup_path, timestamp, master_name)
+
+    if not os.path.exists(backup_path):
+        os.makedirs(backup_path)
+
+    shutil.copytree(master_path, timed_backup_path)

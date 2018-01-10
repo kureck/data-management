@@ -1,6 +1,6 @@
 import argparse
 from utils.helpers import convert_to_pairs
-from managers.data_manager import generate_data, update_data
+from managers.data_manager import generate_data, update_data, backup_data
 
 parser = argparse.ArgumentParser()
 
@@ -35,6 +35,9 @@ def run():
         update_data(master_path, folders_name_size)
     elif args.which == "data-backup":
         print("data-backup")
+        master_path = args.master_dataset_path
+        backup_path = args.backup_destination
+        backup_data(master_path, backup_path)
 
 if __name__ == "__main__":
     run()
