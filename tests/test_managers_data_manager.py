@@ -1,8 +1,8 @@
 import os
 import shutil
-from managers.data_generator import create_directory
-from managers.data_generator import create_file_by_size
-from managers.data_generator import populate_folder
+from managers.data_manager import create_directory
+from managers.data_manager import create_file_by_size
+from managers.data_manager import populate_folder
 
 
 class TestManagersDataGeneration(object):
@@ -14,7 +14,7 @@ class TestManagersDataGeneration(object):
         if os.path.isdir(self.master_data_path):
             shutil.rmtree(self.master_data_path)
 
-        folder = [("sensors", 64)]
+        folder = [{"sensors": 64}]
         size = 2
 
         create_directory(self.master_data_path, folder, size)
@@ -25,7 +25,7 @@ class TestManagersDataGeneration(object):
         assert expected == value
 
     def test_create_master_dataset_with_control_file(self):
-        folder = [("sensors", 64)]
+        folder = [{"sensors": 64}]
         file_size = 2
 
         if os.path.isdir(self.master_data_path):

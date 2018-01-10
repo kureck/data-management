@@ -8,5 +8,8 @@ def write(content, file_name):
             writer.write(content)
 
 
-def read():
-    pass
+def read(file_name):
+    with open(file_name) as data:
+        loaded_file = json.load(data)
+
+    return loaded_file

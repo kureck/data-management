@@ -3,7 +3,8 @@ import shutil
 import errno
 import random
 import string
-from utils.file import write
+import collections
+from utils.file import write, read
 from utils.helpers import dataset_control_hash
 
 MB = 1024 * 1024
@@ -46,5 +47,21 @@ def populate_folder(dir_path, folder_size, file_size):
 def generate_data(master_path, files_size, folders_name_size):
     create_directory(master_path, folders_name_size, files_size)
     for folder in folders_name_size:
-        create_directory(folder[0])
-        populate_folder(folder[0], folder[1], files_size)
+        for key in folder.keys():
+            create_directory(key)
+            populate_folder(key, folder.get(key), files_size)
+
+
+def update_data(master_path, folders_name_size):
+    control_file_path = "{}/dataset_control.json".format(master_path)
+    control = read(control_file_path)
+    files_size = control.get("file_size")
+    for folder in folders_name_size:
+        for key in folder.keys():
+            populate_folder(key, folder.get(key), files_size)
+    old_folders = control.get("folders")
+    updated = collections.Counter()
+    for d in folders_name_size + old_folders:
+        updated.update(d)
+    control["folders"] = updated
+    write(control, control_file_path)

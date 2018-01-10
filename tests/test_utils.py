@@ -8,14 +8,14 @@ class TestUtils(object):
         string_values = "sensors,64,cars,128,mobiles,256"
         master_path = "master_path"
 
-        expected = [("master_path/sensors", 64), ("master_path/cars", 128), ("master_path/mobiles", 256)]
+        expected = [{"master_path/sensors": 64}, {"master_path/cars": 128}, {"master_path/mobiles": 256}]
 
         value = convert_to_pairs(master_path, string_values)
 
         assert expected == value
 
     def test_create_dataset_control_hash(self):
-        files = [("sensors", 64), ("cars", 128), ("mobiles", 256)]
+        files = [{"sensors": 64}, {"cars": 128}, {"mobiles": 256}]
         file_size = 2
 
         expected = {"file_size": file_size,
