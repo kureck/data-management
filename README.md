@@ -23,7 +23,7 @@ source bin/activate
 git clone https://github.com/kureck/data_management
 cd data_management
 pip install -e .
-py.test graph_distance/tests # to run tests
+py.test data_management/tests # to run tests
 ```
 ---
 
