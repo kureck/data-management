@@ -63,6 +63,8 @@ def create_file_by_size(path, size):
 
 def populate_folder(dir_path, folder_size, file_size):
     """ Create files based on folder and file size.
+        Here we could use async to generate files with coroutines in order
+        to improve performace a bit.
 
         :param dir_path: path where file should be writen
                folder_size: maximum folder size.
